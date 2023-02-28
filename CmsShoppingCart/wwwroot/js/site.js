@@ -2,6 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+/// <reference path="../lib/jquery/dist/jquery.js" />
 
 $(function () {
     if ($("a.confirmDeletion").Length != 0) {
@@ -16,7 +17,6 @@ $(function () {
         setTimeout(() => $("div.notification").fadeOut(), 2000);
 
     }
-
 });
 
 function readUrl(input) {

@@ -34,7 +34,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    @if (item.Slug != "home")
+                    @if (item.Slug != "home") // remove Delete option from home page
                     {
                         <span>|</span> <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     }

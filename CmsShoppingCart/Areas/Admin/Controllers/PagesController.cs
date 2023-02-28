@@ -11,15 +11,17 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
     [Area("Admin")]
     public class PagesController : Controller
     {
+        #region Dependency Injection
         private readonly CmsShoppingCartContext context;
 
         public PagesController(CmsShoppingCartContext context)
         {
             this.context = context;
         }
+        #endregion
 
         // GET /admin/pages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() // return ordered list of pages 
         {
             IQueryable<Page> pages = from p in context.Pages
                                      orderby p.Sorting
@@ -31,8 +33,10 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         // GET /admin/pages/details/5
         public async Task<IActionResult> Details(int id)
         {
+            #region Check if page exist
             var page = await context.Pages.FirstOrDefaultAsync(p => p.Id == id);
             if (page == null) return NotFound();
+            #endregion
 
             return View(page);
         }
@@ -46,14 +50,20 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                #region initialize Slug and Sorting attribute
                 page.Slug = page.Title.ToLower().Replace(" ", "-");
                 page.Sorting = 100;
+                #endregion
+
+                #region Check if there is a page with the same slug
                 var slug = await context.Pages.FirstOrDefaultAsync(x => x.Slug == page.Slug);
                 if (slug != null)
                 {
                     ModelState.AddModelError("", "The page is already exist");
                     return View(page);
                 }
+                #endregion
+
                 context.Add(page);
                 await context.SaveChangesAsync();
                 TempData["Success"] = "The page has been added!";
@@ -70,13 +80,17 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
 
             return View(page);
         }
+
         // POST /admin/pages/edit/5
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Page page)
         {
             if (ModelState.IsValid)
             {
+                // set the slug of page with id = 1 to home whatever the name of it
                 page.Slug = page.Id == 1 ? "home" : page.Title.ToLower().Replace(" ", "-");
+
+                #region Check if there is a page with the same slug name but not the edited page
                 // get all pages but not the edit page and the check if there is another page with the same slug name of edit page 
                 var slug = await context.Pages.Where(p => p.Id != page.Id).FirstOrDefaultAsync(x => x.Slug == page.Slug);
                 if (slug != null)
@@ -84,6 +98,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
                     ModelState.AddModelError("", "The page is already exist");
                     return View(page);
                 }
+                #endregion
+
                 context.Update(page);
                 await context.SaveChangesAsync();
                 TempData["Success"] = "The page has been edited successfully!";
