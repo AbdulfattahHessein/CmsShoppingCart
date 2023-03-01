@@ -9,9 +9,11 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+@*sorting, pages and home class for ui sorting*@
+<table class="table sorting" id="pages">
     <thead>
-        <tr>
+        @*class = "home" to dont sort home page*@
+        <tr class="home">
             <th>
                 Title
             </th>
@@ -24,7 +26,8 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            //class = "@item.Slug" cause dont want to sort home page
+            <tr id="id_@item.Id" class="@item.Slug">
                 <td>
                     @item.Title
                 </td>
@@ -43,3 +46,18 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $("table#pages tbody").sortable(
+            {
+                items: "tr:not(.home)",
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    let ids = $("table#pages tbody").sortable("serialize");
+                    let url = "/admin/pages/reorder";
+                    $.post(url, ids, function () { });
+                }
+            })
+    </script>
+}

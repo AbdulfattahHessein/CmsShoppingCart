@@ -47,7 +47,10 @@ namespace CmsShoppingCart.Infrastructure
 
         private void ClosingHtml(StringBuilder content)
         {
-            content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}/{PageCount}'>{PageLast}</a></li>");
+            if (PageNumber != PageCount)
+            {
+                content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}?p={PageCount}'>{PageLast}</a></li>");
+            }
             content.Append(" </ul");
         }
 
@@ -60,7 +63,7 @@ namespace CmsShoppingCart.Infrastructure
                     continue;
                 }
                 var active = currentPage == PageNumber ? "active" : "";
-                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}/{currentPage}'>{currentPage}</a></li>");
+                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}?p={currentPage}'>{currentPage}</a></li>");
             }
         }
 
@@ -73,7 +76,7 @@ namespace CmsShoppingCart.Infrastructure
                     continue;
                 }
                 var active = currentPage == PageNumber ? "active" : "";
-                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}/{currentPage}'>{currentPage}</a></li>");
+                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}?p={currentPage}'>{currentPage}</a></li>");
             }
         }
 
@@ -86,14 +89,18 @@ namespace CmsShoppingCart.Infrastructure
                     continue;
                 }
                 var active = currentPage == PageNumber ? "active" : "";
-                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}/{currentPage}'>{currentPage}</a></li>");
+                content.Append($"<li class='page-item {active}'><a class='page-link'href='{PageTarget}?p={currentPage}'>{currentPage}</a></li>");
             }
         }
 
         private void InitPaginationHtml(StringBuilder content)
         {
             content.Append(" <ul class='pagination'>");
-            content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}/1'>{PageFirst}</a></li>");
+            if (PageNumber != 1)
+            {
+                content.Append($"<li class='page-item'><a class='page-link' href='{PageTarget}?p=1'>{PageFirst}</a></li>");
+
+            }
         }
 
         private void InitDefaults()

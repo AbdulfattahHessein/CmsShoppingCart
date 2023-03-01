@@ -79,3 +79,15 @@ body {
 a:hover {
     opacity: .3 !important;
 }
+
+
+/*/////////////////////////////////////////////*/
+
+
+table.sorting tr:not(.home) {
+    cursor: pointer;
+}
+
+.ui-state-highlight {
+    border: 2px dashed #ccc;
+}

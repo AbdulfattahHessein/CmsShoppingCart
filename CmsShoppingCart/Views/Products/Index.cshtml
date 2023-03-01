@@ -8,14 +8,25 @@
     @foreach (var item in Model)
     {
         <div class="col-4">
+            <div class="ajaxbg">
+
+            </div>
             <img src="~/media/products/@item.Image" class="img-fluid" alt="Alternate Text" />
             <h4>@item.Name</h4>
             <div>
                 @Html.Raw(item.Description)
             </div>
             <p>@item.Price.ToString("C2")</p>
-            <p><a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" class="btn btn-primary">Add to card</a></p>
+            <p><a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" data-id ="@item.Id" class="btn btn-primary">Add to card</a></p>
         </div>
     }
 </div>
+@if (ViewBag.TotalPages > 1)
+{
+    <div class="d-flex w-100 justify-content-center">
+        <pagination page-count="@ViewBag.TotalPages" page-target="/products" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+    </div>
+}
+
+
 

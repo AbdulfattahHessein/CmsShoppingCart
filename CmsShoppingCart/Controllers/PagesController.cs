@@ -1,6 +1,5 @@
 ﻿using CmsShoppingCart.Infrastructure;
 using CmsShoppingCart.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -11,12 +10,9 @@ namespace CmsShoppingCart.Controllers
     public class PagesController : Controller
     {
         private readonly CmsShoppingCartContext context;
-        private readonly IWebHostEnvironment webHostEnvironment;
-
-        public PagesController(CmsShoppingCartContext context, IWebHostEnvironment webHostEnvironment)
+        public PagesController(CmsShoppingCartContext context)
         {
             this.context = context;
-            this.webHostEnvironment = webHostEnvironment;
         }
 
         //GET / or /slug
@@ -26,6 +22,7 @@ namespace CmsShoppingCart.Controllers
             {
                 return View(await context.Pages.Where(p => p.Slug == "home").FirstOrDefaultAsync());
             }
+
             Page page = await context.Pages.Where(p => p.Slug == slug).FirstOrDefaultAsync();
 
             if (page == null)
@@ -34,5 +31,6 @@ namespace CmsShoppingCart.Controllers
             }
             return View(page);
         }
+
     }
 }

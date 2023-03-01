@@ -126,5 +126,23 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST /admin/pages/reorder
+        [HttpPost]
+        public async Task<IActionResult> Reorder(int[] id) // id post from js ui in index view, the name is id not ids, check order post in network inspect
+        {
+            int count = 1; //first sorting number is one because home page is zero
+
+            foreach (var pageId in id)
+            {
+                Page page = await context.Pages.FindAsync(pageId);
+                page.Sorting = count;
+                context.Update(page);
+                await context.SaveChangesAsync();
+                count++;
+            }
+            return Ok();
+
+        }
+
     }
 }
