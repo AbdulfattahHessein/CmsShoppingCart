@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CmsShoppingCart.Infrastructure.ValidationAttributes;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CmsShoppingCart.Models
+namespace CmsShoppingCart.Models.Entities
 {
     public class Product
     {

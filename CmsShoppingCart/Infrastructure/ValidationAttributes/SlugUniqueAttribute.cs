@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace CmsShoppingCart.Infrastructure
+namespace CmsShoppingCart.Infrastructure.ValidationAttributes
 {
     public class SlugUniqueAttribute : ValidationAttribute
     {

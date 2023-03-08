@@ -1,6 +1,8 @@
 using CmsShoppingCart.Infrastructure;
+using CmsShoppingCart.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,8 @@ namespace CmsShoppingCart
             });
             #endregion
 
+            services.AddRouting(option => option.LowercaseUrls = true);
+
             services.AddControllersWithViews();
 
             #region Add DbContext service
@@ -39,6 +43,19 @@ namespace CmsShoppingCart
                    options => options.UseSqlServer(Configuration.GetConnectionString("CmsShoppingCartContext"))
                    );
             #endregion
+            services.AddIdentity<AppUser, IdentityRole>(
+                setupAction =>
+                {
+                    setupAction.Password.RequiredLength = 4;
+                    setupAction.Password.RequireNonAlphanumeric = false;
+                    setupAction.Password.RequireLowercase = false;
+                    setupAction.Password.RequireUppercase = false;
+                    setupAction.Password.RequireDigit = false;
+
+                }
+                )
+                .AddEntityFrameworkStores<CmsShoppingCartContext>()
+                .AddDefaultTokenProviders();
         }
         #endregion
 
@@ -68,6 +85,8 @@ namespace CmsShoppingCart
             #region search about
             app.UseSession();
             #endregion
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,11 +1,11 @@
-﻿using CmsShoppingCart.Models;
+﻿using CmsShoppingCart.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CmsShoppingCart.Infrastructure
+namespace CmsShoppingCart.Infrastructure.ViewComponents
 {
     public class MainMenuViewComponent : ViewComponent
     {

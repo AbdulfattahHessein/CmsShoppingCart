@@ -1,5 +1,5 @@
 ﻿using CmsShoppingCart.Infrastructure;
-using CmsShoppingCart.Models;
+using CmsShoppingCart.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

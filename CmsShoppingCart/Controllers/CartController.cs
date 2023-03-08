@@ -1,4 +1,5 @@
 ﻿using CmsShoppingCart.Infrastructure;
+using CmsShoppingCart.Infrastructure.ViewModels;
 using CmsShoppingCart.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace CmsShoppingCart.Controllers
 
             List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
-            CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
+            CartItem cartItem = cart.FirstOrDefault(c => c.ProductId == id);
 
             if (cartItem == null)
             {
@@ -49,15 +50,19 @@ namespace CmsShoppingCart.Controllers
             {
                 cartItem.Quantity++;
             }
-            CartViewModel cartViewModel = new CartViewModel()
-            {
-                CartItems = cart,
-                GrandTotal = cart.Sum(c => c.Price * c.Quantity)
-            };
+            //CartViewModel cartViewModel = new CartViewModel()
+            //{
+            //    CartItems = cart,
+            //    GrandTotal = cart.Sum(c => c.Price * c.Quantity)
+            //};
 
             HttpContext.Session.SetJson("Cart", cart);
 
-            return RedirectToAction("Index");
+            if (HttpContext.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+                return RedirectToAction("Index");
+
+            return ViewComponent("SmallCart");
+
         }
 
         //GET /cart/decrease/5
@@ -65,7 +70,10 @@ namespace CmsShoppingCart.Controllers
         {
             List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
 
-            CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
+            CartItem cartItem = cart.FirstOrDefault(c => c.ProductId == id);
+
+            if (cartItem == null)
+                return NotFound();
 
             if (cartItem.Quantity > 1)
             {
@@ -89,7 +97,7 @@ namespace CmsShoppingCart.Controllers
         {
             List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
 
-            CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
+            //CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
 
             cart.RemoveAll(c => c.ProductId == id);
 
@@ -102,10 +110,14 @@ namespace CmsShoppingCart.Controllers
         }
 
         //GET /cart/clear/5
-        public IActionResult Clear(int id)
+        public IActionResult Clear()
         {
             HttpContext.Session.Remove("Cart");
-            return RedirectToAction("Index");
+            //return RedirectToAction("Page", "Pages");
+            //return Redirect("/");
+            if (HttpContext.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+                return Redirect(Request.Headers["Referer"].ToString()); // redirect to the same page that made the request
+            return Ok();
         }
     }
 }

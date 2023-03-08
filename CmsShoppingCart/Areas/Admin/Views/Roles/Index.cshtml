@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h1>Roles</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@*sorting, pages and home class for ui sorting*@
+<table class="table">
+    <thead>
+        @*class = "home" to dont sort home page*@
+        <tr class="home">
+            <th>Id</th>
+            <th>Role</th>
+            <th>Users</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            //class = "@item.Slug" cause dont want to sort home page
+            <tr>
+                <td>
+                    @role.Id
+                </td>
+                <td>
+                    @role.Name
+                </td>
+                <td user-role="@role.Id">
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@role.Id">Edit</a> |
+                    <a class="confirmDeletion" asp-action="Delete" asp-route-id="@role.Id">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

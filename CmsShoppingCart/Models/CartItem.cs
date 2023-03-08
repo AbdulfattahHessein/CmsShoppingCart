@@ -1,4 +1,6 @@
-﻿namespace CmsShoppingCart.Models
+﻿using CmsShoppingCart.Models.Entities;
+
+namespace CmsShoppingCart.Models
 {
     public class CartItem
     {

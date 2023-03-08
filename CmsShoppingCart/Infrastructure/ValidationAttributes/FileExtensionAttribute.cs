@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 
-namespace CmsShoppingCart.Models
+namespace CmsShoppingCart.Infrastructure.ValidationAttributes
 {
     public class FileExtensionAttribute : ValidationAttribute
     {

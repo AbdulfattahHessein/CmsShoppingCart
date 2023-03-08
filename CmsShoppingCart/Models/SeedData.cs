@@ -1,4 +1,5 @@
 ﻿using CmsShoppingCart.Infrastructure;
+using CmsShoppingCart.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

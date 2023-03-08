@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" href="/" target="_blank">Home</a>
+                <a class="navbar-brand" href="/" >Home</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,8 +27,42 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Roles" asp-action="Index">Roles</a>
+                        </li>
                     </ul>
                 </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end">
+
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item mr-1">
+                                <a asp-controller="Account" asp-action="Edit" asp-area="" class="btn btn-primary">
+                                    My Account
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Logout" asp-area="" class="btn btn-danger">
+                                    Hi, @User.Identity.Name, Logout
+                                </a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-success">Login</a>
+                            </li>
+                            <li class="nav-item ml-1">
+                                <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Register</a>
+                            </li>
+                        }
+
+                    </ul>
             </div>
         </nav>
     </header>

@@ -1,5 +1,6 @@
 ﻿using CmsShoppingCart.Infrastructure;
-using CmsShoppingCart.Models;
+using CmsShoppingCart.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace CmsShoppingCart.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly CmsShoppingCartContext context;

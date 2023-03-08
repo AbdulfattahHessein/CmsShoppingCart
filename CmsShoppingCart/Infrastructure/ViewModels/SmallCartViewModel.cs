@@ -1,4 +1,4 @@
-﻿namespace CmsShoppingCart.Models
+﻿namespace CmsShoppingCart.Infrastructure.ViewModels
 {
     public class SmallCartViewModel
     {

@@ -1,16 +1,19 @@
 ﻿using CmsShoppingCart.Infrastructure;
-using CmsShoppingCart.Models;
+using CmsShoppingCart.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CmsShoppingCart.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class ProductsController : Controller
     {
@@ -172,6 +175,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var product = await context.Products.FindAsync(id);
+            var productPageIndex = Array.IndexOf(context.Products.ToArray(), product);
+
             if (product == null)
             {
                 TempData["Error"] = "The product doesn't exist!";
@@ -192,7 +197,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
                 TempData["Success"] = "The product has been deleted successfully!";
             }
 
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index" /*, new { p = Math.Ceiling((decimal)productPageIndex) % 6 }*/);
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
 
