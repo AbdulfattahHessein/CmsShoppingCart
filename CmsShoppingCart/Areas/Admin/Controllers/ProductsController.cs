@@ -175,8 +175,6 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var product = await context.Products.FindAsync(id);
-            var productPageIndex = Array.IndexOf(context.Products.ToArray(), product);
-
             if (product == null)
             {
                 TempData["Error"] = "The product doesn't exist!";
@@ -197,7 +195,6 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
                 TempData["Success"] = "The product has been deleted successfully!";
             }
 
-            //return RedirectToAction("Index" /*, new { p = Math.Ceiling((decimal)productPageIndex) % 6 }*/);
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
