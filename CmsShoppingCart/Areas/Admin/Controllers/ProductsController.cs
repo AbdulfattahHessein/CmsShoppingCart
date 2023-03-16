@@ -29,6 +29,7 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         }
         #endregion
 
+
         // GET /admin/products
         public async Task<IActionResult> Index(int p = 1) //you must create a new route take "p" instead "id"
         {
