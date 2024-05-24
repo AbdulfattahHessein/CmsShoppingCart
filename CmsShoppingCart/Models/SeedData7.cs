@@ -7,12 +7,13 @@ using System.Linq;
 
 namespace CmsShoppingCart.Models
 {
-    public class SeedData
+    public class SeedData7
     {
         public static void Initailize(IServiceProvider serverProvider)
         {
-            using (var context = new CmsShoppingCartContext
-                (serverProvider.GetRequiredService<DbContextOptions<CmsShoppingCartContext>>()))
+            using (
+                var context = new CmsShoppingCartContext(serverProvider.GetRequiredService<DbContextOptions<CmsShoppingCartContext>>())
+                )
             {
                 if (context.Pages.Any())
                 {

@@ -18,7 +18,7 @@ namespace CmsShoppingCart.Controllers
         {
             this.context = context;
         }
-        // GET /admin/products
+        // GET /products
         public async Task<IActionResult> Index(int p = 1) //you must create a new route take "p" instead "id"
         {
             int pageSize = 6;
