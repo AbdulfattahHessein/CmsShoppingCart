@@ -1,13 +1,12 @@
-using CmsShoppingCart.Data;
 using CmsShoppingCart.Infrastructure;
 using CmsShoppingCart.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,13 +18,6 @@ builder.Services.AddSession(options =>
     // options.IdleTimeout = TimeSpan.FromSeconds(2);
     // options.IdleTimeout = TimeSpan.FromDays(2);
 });
-
-builder.Services.Configure<RouteOptions>(options =>
-{
-    options.AppendTrailingSlash = false;
-    options.LowercaseUrls = true;
-});
-
 
 builder.Services.AddRouting(option => option.LowercaseUrls = true);
 builder.Services.AddControllersWithViews();
@@ -51,8 +43,22 @@ var app = builder.Build();
 using (var scope = app.Services.CreateAsyncScope())
 {
     var services = scope.ServiceProvider;
-    var configuration = services.GetRequiredService<IConfiguration>();
-    await SeedData.Initialize(services, configuration);
+
+    var context = services.GetRequiredService<CmsShoppingCartContext>();
+
+    try
+    {
+        await context.Database.MigrateAsync();
+
+    }
+    catch (Exception)
+    {
+        await context.Database.EnsureDeletedAsync();
+
+        await context.Database.MigrateAsync();
+    }
+
+    await context.SeedDataAsync(services);
 }
 
 // Configure the HTTP request pipeline
@@ -79,27 +85,26 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapControllerRoute(
         name: "areas",
-        pattern: "{area:exists}/{controller=Pages}/{action=Index}/{id?}",
-        defaults: new { controller = "Pages", action = "Index" }
-    );
+        pattern: "{area:exists}/{controller=Pages}/{action=Index}/{id?}");
 
     endpoints.MapControllerRoute(
-       name: "products",
-       pattern: "products/{categorySlug?}",
-       defaults: new { controller = "Products", action = "Index" }
-   );
+       name: "default",
+       pattern: "{controller=Home}/{action=Index}/{id?}");
 
     endpoints.MapControllerRoute(
-        name: "pages",
-        pattern: "{slug?}",
-        defaults: new { controller = "Pages", action = "Page" }
-    );
+       name: "pages",
+       pattern: "{slug?}",
+       defaults: new { controller = "Pages", action = "Page" });
 
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}"
-    );
+   
 });
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Pages}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();

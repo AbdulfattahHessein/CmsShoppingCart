@@ -75,7 +75,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         {
             #region Check if the category exist
             var category = await context.Categories.FindAsync(id);
-            if (category == null) return NotFound();
+            if (category == null)
+                return NotFound();
             #endregion
 
             return View(category);

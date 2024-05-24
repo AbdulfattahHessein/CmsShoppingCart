@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using CmsShoppingCart.Models;
+﻿using CmsShoppingCart.Models;
+using System.Collections.Generic;
 
 namespace CmsShoppingCart.Infrastructure.ViewModels
 {

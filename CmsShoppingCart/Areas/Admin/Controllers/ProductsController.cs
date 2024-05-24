@@ -37,7 +37,7 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
             int pageSize = 6;
             var products = context.Products.OrderByDescending(x => x.Id)
                                             .Include(x => x.Category)
-                                            .Skip((p - 1) * pageSize) // if p = 2, this mean the first sex elements are skipped
+                                            .Skip(( p - 1 ) * pageSize) // if p = 2, this mean the first sex elements are skipped
                                             .Take(pageSize); // return the first 6 elements from the remaining list returned from skip()  
             #endregion
 
@@ -52,7 +52,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var product = await context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
-            if (product == null) return NotFound();
+            if (product == null)
+                return NotFound();
 
             return View(product);
         }
@@ -117,7 +118,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var product = await context.Products.FindAsync(id);
-            if (product == null) return NotFound();
+            if (product == null)
+                return NotFound();
 
             ViewBag.CategoryId = new SelectList(context.Categories.OrderBy(x => x.Sorting), nameof(Category.Id), nameof(Category.Name));
 

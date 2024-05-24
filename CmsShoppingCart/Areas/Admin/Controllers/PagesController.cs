@@ -38,7 +38,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         {
             #region Check if page exist
             var page = await context.Pages.FirstOrDefaultAsync(p => p.Id == id);
-            if (page == null) return NotFound();
+            if (page == null)
+                return NotFound();
             #endregion
 
             return View(page);
@@ -79,7 +80,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var page = await context.Pages.FindAsync(id);
-            if (page == null) return NotFound();
+            if (page == null)
+                return NotFound();
 
             return View(page);
         }
