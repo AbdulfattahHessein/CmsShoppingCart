@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CmsShoppingCart.Areas.Admin.Controllers
@@ -22,7 +23,7 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         }
 
         //GET /admin/roles
-        public IActionResult Index() => View(roleManager.Roles);
+        public IActionResult Index() => View(roleManager.Roles.ToList());
 
         //GET /admin/roles/create
         public IActionResult Create() => View();
@@ -58,8 +59,8 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
             IdentityRole role = await roleManager.FindByIdAsync(id);
             List<AppUser> members = new List<AppUser>();
             List<AppUser> noMembers = new List<AppUser>();
-
-            foreach (AppUser user in userManager.Users)
+            var users = userManager.Users.ToList();
+            foreach (AppUser user in users)
             {
                 var list = await userManager.IsInRoleAsync(user, role.Name) ? members : noMembers;
                 list.Add(user);

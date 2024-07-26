@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace CmsShoppingCart.Areas.Admin.Controllers
 {
@@ -18,7 +19,7 @@ namespace CmsShoppingCart.Areas.Admin.Controllers
         public IActionResult Index()
         {
 
-            return View(userManager.Users);
+            return View(userManager.Users.ToList());
         }
     }
 }
